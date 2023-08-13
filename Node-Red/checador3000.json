@@ -1,0 +1,43 @@
+[
+    {
+        "id": "9b6dca9d0bc85728",
+        "type": "ui_template",
+        "z": "baf1c45e66aacaf5",
+        "group": "179843403be53c95",
+        "name": "",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "format": "<iframe id=\"video\" title=\"Video\" width=\"300\" height=\"200\" src=\"http://192.168.0.161:81/stream\">\n</iframe>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 80,
+        "y": 60,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "179843403be53c95",
+        "type": "ui_group",
+        "name": "Capturar",
+        "tab": "09ed23d547cd5a74",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "09ed23d547cd5a74",
+        "type": "ui_tab",
+        "name": "checador de rutas",
+        "icon": "dashboard",
+        "order": 7,
+        "disabled": false,
+        "hidden": false
+    }
+]
