@@ -22,5 +22,5 @@ node-red-node-ui-table
 0.4.3
 
 ## Flujo Node-red
-<img src="./imagenes/img1.png">
+<img src="https://raw.githubusercontent.com/Vanadiox/Checador-de-rutas-3000/main/Imagenes/img1.png">
 
