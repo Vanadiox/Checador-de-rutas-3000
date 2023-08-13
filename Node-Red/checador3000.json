@@ -1,5 +1,123 @@
 [
     {
+        "id": "baf1c45e66aacaf5",
+        "type": "tab",
+        "label": "Checador de rutas 3000",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1b0b73e14b357b35",
+        "type": "ui_button",
+        "z": "baf1c45e66aacaf5",
+        "name": "",
+        "group": "179843403be53c95",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Capturar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 80,
+        "y": 120,
+        "wires": [
+            [
+                "2d2c89d96cdd1d77"
+            ]
+        ]
+    },
+    {
+        "id": "2d2c89d96cdd1d77",
+        "type": "http request",
+        "z": "baf1c45e66aacaf5",
+        "name": "",
+        "method": "GET",
+        "ret": "bin",
+        "paytoqs": "ignore",
+        "url": "http://192.168.0.161/capture",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "fa2b02847fe7694f"
+            ]
+        ]
+    },
+    {
+        "id": "fa2b02847fe7694f",
+        "type": "file",
+        "z": "baf1c45e66aacaf5",
+        "name": "",
+        "filename": "/home/egiovanni/ProyectoIOT/Deteccióndeplacas/img.jpg",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 370,
+        "y": 160,
+        "wires": [
+            [
+                "156fe5e36bd364d9"
+            ]
+        ]
+    },
+    {
+        "id": "156fe5e36bd364d9",
+        "type": "function",
+        "z": "baf1c45e66aacaf5",
+        "name": "function 4",
+        "func": "msg.payload = \" /home/egiovanni/ProyectoIOT/Deteccióndeplacas/img.jpg\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 200,
+        "wires": [
+            [
+                "a9587028a74f8139"
+            ]
+        ]
+    },
+    {
+        "id": "a9587028a74f8139",
+        "type": "exec",
+        "z": "baf1c45e66aacaf5",
+        "command": "python /home/egiovanni/ProyectoIOT/Deteccióndeplacas/get_placa.py",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 610,
+        "y": 60,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
         "id": "9b6dca9d0bc85728",
         "type": "ui_template",
         "z": "baf1c45e66aacaf5",
@@ -21,6 +139,259 @@
         ]
     },
     {
+        "id": "5bbdc5870e831f6b",
+        "type": "mqtt in",
+        "z": "baf1c45e66aacaf5",
+        "name": "",
+        "topic": "codigoIoT/mqtt/civ/placas/",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "4276dcf0b5fb42df",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "0bd0aad8b8efa447",
+                "efaa2b2d8ce48876"
+            ]
+        ]
+    },
+    {
+        "id": "efaa2b2d8ce48876",
+        "type": "ui_text",
+        "z": "baf1c45e66aacaf5",
+        "group": "179843403be53c95",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Placa",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 250,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "249991a7f6229165",
+        "type": "mysql",
+        "z": "baf1c45e66aacaf5",
+        "mydb": "6086875ba563388f",
+        "name": "",
+        "x": 350,
+        "y": 680,
+        "wires": [
+            [
+                "b3ba32c3cd9db047"
+            ]
+        ]
+    },
+    {
+        "id": "1254864975e8cdcb",
+        "type": "function",
+        "z": "baf1c45e66aacaf5",
+        "name": "function 5",
+        "func": "// Construir la consulta SQL\n//var query = \"SELECT numero_de_ruta, ubicacion_actual, tiempo_estimado, hora_checada FROM checador WHERE ubicacion_actual = 'Av. Universidad 120'\";\nvar query = \"SELECT numero_de_ruta, ubicacion_actual AS 'Parada anterior donde checo', tiempo_estimado, proxima_parada AS 'Parada actual', hora_checada FROM checador WHERE ubicacion_actual = 'Av. Universidad 120'\";\n\n// Crear el mensaje de salida\nmsg.topic = query;\nmsg.payload = null;  // No es necesario enviar datos en el payload\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 120,
+        "y": 680,
+        "wires": [
+            [
+                "249991a7f6229165"
+            ]
+        ]
+    },
+    {
+        "id": "35aa40b60cc75b89",
+        "type": "ui_button",
+        "z": "baf1c45e66aacaf5",
+        "name": "",
+        "group": "49d7685f35400ffc",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Actualizar",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 620,
+        "wires": [
+            [
+                "1254864975e8cdcb"
+            ]
+        ]
+    },
+    {
+        "id": "0bd0aad8b8efa447",
+        "type": "function",
+        "z": "baf1c45e66aacaf5",
+        "name": "function 6",
+        "func": "// Obtener el valor de \"placa\" desde el mensaje MQTT\nvar placa = msg.payload;\n\n// Consulta SQL\nvar query = \"SELECT * FROM inf_ruta WHERE placas = ?\";\nvar params = [placa];\n\n// Ejecutar la consulta en la base de datos\nmsg.topic = query;\nmsg.payload = params;\ncontext.global.plac=placa;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 340,
+        "wires": [
+            [
+                "01edbfee015a2056"
+            ]
+        ]
+    },
+    {
+        "id": "01edbfee015a2056",
+        "type": "mysql",
+        "z": "baf1c45e66aacaf5",
+        "mydb": "6086875ba563388f",
+        "name": "VALIDAPLACAS",
+        "x": 310,
+        "y": 280,
+        "wires": [
+            [
+                "0f1364a29af636fb"
+            ]
+        ]
+    },
+    {
+        "id": "0f1364a29af636fb",
+        "type": "function",
+        "z": "baf1c45e66aacaf5",
+        "name": "function 7",
+        "func": "// Verificar el resultado de la consulta\n// Definir una variable global llamada \"placa\"\n\n\nif (msg.payload.length > 0) {\n \n    // Se encontraron registros en la base de datos\n    // Mostrar el mensaje \"tilin\"\n    msg.payload = \"placa localizada\";\n} else {\n    // No se encontraron registros en la base de datos\n    // Puedes mantener el mensaje anterior o cambiarlo\n    msg.payload = \"vuelva a escanear\";\n    throw \"La condición no se cumple, deteniendo el flujo.\";\n}\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 280,
+        "wires": [
+            [
+                "5cffb67cbd119943",
+                "a48fb69aed632bdd"
+            ]
+        ]
+    },
+    {
+        "id": "5cffb67cbd119943",
+        "type": "ui_text",
+        "z": "baf1c45e66aacaf5",
+        "group": "179843403be53c95",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Estado: ",
+        "format": "{{msg.payload}}",
+        "layout": "col-center",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 700,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a48fb69aed632bdd",
+        "type": "function",
+        "z": "baf1c45e66aacaf5",
+        "name": "function 8",
+        "func": "// Obtener el valor de la variable global \"placa\"\n//var placa = \"JAZSDJ78\";\n//context.global.plac;\n//global.get(\"placa\");\n//msg.placa;\n// Definir el comando para ejecutar el script de Python con el argumento \"placa\"\n//var pythonScript = 'python /home/egiovanni/ProyectoIOT/Deteccióndeplacas/registro.py ' + \"JAZSDJ78\" + '';\n\n// Enviar el comando a través de un mensaje\nmsg.payload = context.global.plac;\nreturn msg;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 420,
+        "wires": [
+            [
+                "088507e39bfe23fa"
+            ]
+        ]
+    },
+    {
+        "id": "088507e39bfe23fa",
+        "type": "exec",
+        "z": "baf1c45e66aacaf5",
+        "command": "python3 /home/egiovanni/ProyectoIOT/Deteccióndeplacas/registro.py",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "",
+        "x": 750,
+        "y": 500,
+        "wires": [
+            [],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "b3ba32c3cd9db047",
+        "type": "ui_table",
+        "z": "baf1c45e66aacaf5",
+        "group": "49d7685f35400ffc",
+        "name": "",
+        "order": 0,
+        "width": "25",
+        "height": "15",
+        "columns": [],
+        "outputs": 0,
+        "cts": false,
+        "x": 590,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "85e198d0ec611261",
+        "type": "ui_spacer",
+        "z": "baf1c45e66aacaf5",
+        "name": "spacer",
+        "group": "49d7685f35400ffc",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "6615ddb9d1862d79",
+        "type": "ui_spacer",
+        "z": "baf1c45e66aacaf5",
+        "name": "spacer",
+        "group": "49d7685f35400ffc",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
         "id": "179843403be53c95",
         "type": "ui_group",
         "name": "Capturar",
@@ -32,11 +403,68 @@
         "className": ""
     },
     {
+        "id": "4276dcf0b5fb42df",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "6086875ba563388f",
+        "type": "MySQLdatabase",
+        "name": "CHECADOR3000",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "CHECADOR3000",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "49d7685f35400ffc",
+        "type": "ui_group",
+        "name": "Parada actual",
+        "tab": "58d8aebbba817823",
+        "order": 2,
+        "disp": true,
+        "width": "25",
+        "collapse": true,
+        "className": ""
+    },
+    {
         "id": "09ed23d547cd5a74",
         "type": "ui_tab",
         "name": "checador de rutas",
         "icon": "dashboard",
         "order": 7,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "58d8aebbba817823",
+        "type": "ui_tab",
+        "name": "Parada",
+        "icon": "dashboard",
+        "order": 8,
         "disabled": false,
         "hidden": false
     }
